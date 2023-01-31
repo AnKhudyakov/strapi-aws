@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 /**
  * order controller
  */
 
-const { createCoreController } = require('@strapi/strapi').factories;
+const { createCoreController } = require("@strapi/strapi").factories;
 
-module.exports = createCoreController('api::order.order', ({ strapi }) => ({
+module.exports = createCoreController("api::order.order", ({ strapi }) => ({
   async create(ctx) {
     const { products, userName, email } = ctx.request.body;
     try {
@@ -44,7 +44,7 @@ module.exports = createCoreController('api::order.order', ({ strapi }) => ({
       // create the item
       await strapi
         .service("api::order.order")
-        .create({ data: { userName, products, stripeSessionId: session.id } });
+        .create({ data: { userName, products, stripeSessionid: session.id } });
 
       // return the session id
       return { id: session.id };
