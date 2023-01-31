@@ -11,7 +11,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
   async create(ctx) {
     const { products, userName, email } = ctx.request.body;
     try {
-      // retrieve product information
+     //retrieve product information
       const lineItems = await Promise.all(
         products.map(async (product) => {
           const item = await strapi
@@ -31,20 +31,22 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         })
       );
 
-      // create a stripe session
+      //create a stripe session
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         customer_email: email,
         mode: "payment",
-        success_url: `${NEXT_PUBLIC_STRAPI_URL}/checkout/success`,
-        cancel_url: `${NEXT_PUBLIC_STRAPI_URL}`,
+        success_url: `${process.env.NEXT_PUBLIC_STRAPI_URL}/checkout/success`,
+        cancel_url: `${process.env.NEXT_PUBLIC_STRAPI_URL}`,
         line_items: lineItems,
       });
 
       // create the item
       await strapi
         .service("api::order.order")
-        .create({ data: { userName, products, stripeSessionid: session.id } });
+        .create({
+          data: { userName, products, stripeSessionid: "session.id" },
+        });
 
       // return the session id
       return { id: session.id };
