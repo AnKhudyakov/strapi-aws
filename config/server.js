@@ -4,5 +4,5 @@ module.exports = ({ env }) => ({
   app: {
     keys: env.array('APP_KEYS'),
   },
-  url: 'http://my-strapi-aws.com'
+  url: 'https://my-strapi-aws.com'
 });
